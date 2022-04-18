@@ -1,0 +1,36 @@
+const fs = require('fs');
+const PATH= "/My-Blog-APP/API/data.json";
+
+class Posts{
+  get(){
+    // Get posts
+    return this.readData() ;
+  }
+
+  getIndividualBlog(id){
+    // Get one blog post
+    const allPost = this.readData() ;
+    const foundPost = allPost.find((post)=>post.id == id) ;
+    return foundPost ;
+  }
+
+  add(newPost){
+    // ADD new post
+    const retrievedData = this.readData() ;
+    retrievedData.unshift(newPost) ;
+    this.storeData(retrievedData) ;
+  }
+
+  readData(){
+    let rawdata = fs.readFileSync(PATH) ;
+    let posts = JSON.parse(rawdata) ;
+    return posts ;
+  }
+
+  storeData(rawData){
+    let data = JSON.stringify(rawData);
+    fs.writeFileSync(PATH , data) ;
+  }
+}
+
+module.exports = Posts ;
